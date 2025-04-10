@@ -9,6 +9,7 @@ ZSH utilities for Spider Strategies developers to streamline Git workflow and br
 - 🧠 Auto-generates branch names like `issue-60938-field-widgets-have-a-span-with-a-nested-div-structure`
 - 📌 Infers base branch from GitHub milestone (via `gh` CLI)
 - 📁 Auto-cds into correct `~/impact/vXYZ` folder based on milestone
+- 🧭 Falls back to current directory if milestone format or folder is missing
 - 📝 Includes helpers for commit messages, issue IDs, and capitalization
 
 
