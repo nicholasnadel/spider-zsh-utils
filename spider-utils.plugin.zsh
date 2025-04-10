@@ -42,8 +42,6 @@ alias fm='fixmessage'
 
 
 ##### 🧠 SPIDER BRANCH CREATION TOOL #####
-# Example:
-#   cb 'Field widgets have a span with a nested div structure #60938'
 
 function createbranch() {
 	local input="$*"
@@ -57,18 +55,18 @@ function createbranch() {
 	echo "🔍 Using issue number: $issue_number"
 
 	local source_branch=""
+	local suggested_dir=""
 	if command -v gh >/dev/null && command -v jq >/dev/null; then
 		local milestone=$(gh issue view "$issue_number" --json milestone | jq -r '.milestone.title')
 		if [[ -n "$milestone" && "$milestone" != "null" ]]; then
 			echo "✅ Found milestone: $milestone"
 			if [[ "$milestone" =~ ^[56]\.[0-9]+\.[0-9]+$ ]]; then
 				local version_digits=$(echo "$milestone" | tr -d '.')
-				local impact_dir="$HOME/impact/v$version_digits"
-				if [[ -d "$impact_dir" ]]; then
-					echo "📂 Changing to $impact_dir"
-					cd "$impact_dir"
+				suggested_dir="$HOME/impact/v$version_digits/app"
+				if [[ -d "$suggested_dir" ]]; then
+					echo "📂 Suggested directory: $suggested_dir"
 				else
-					echo "⚠️ Directory $impact_dir does not exist — staying in current dir"
+					echo "⚠️ Directory $suggested_dir does not exist — staying in current dir"
 				fi
 			else
 				echo "⚠️ Milestone format not recognized"
@@ -103,10 +101,16 @@ function createbranch() {
 	echo
 	read "REPLY?Run git checkout + branch create? [y/N] "
 	if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+		if [[ -n "$suggested_dir" && -d "$suggested_dir/.git" ]]; then
+			echo "📂 Entering $suggested_dir"
+			cd "$suggested_dir"
+		fi
+
 		if ! git rev-parse --verify "$source_branch" >/dev/null 2>&1; then
 			echo "🔍 Fetching missing base branch: $source_branch"
 			git fetch origin "$source_branch":"$source_branch" || return 1
 		fi
+
 		git checkout "$source_branch" &&
 		git pull origin "$source_branch" &&
 		if git show-ref --verify --quiet refs/heads/"$branch_name"; then
@@ -125,8 +129,6 @@ alias cb='createbranch'
 
 
 ##### 🧵 PULL REQUEST CREATION TOOL #####
-# Usage:
-#   pr → prompts for issue closure and opens GitHub PR
 
 function openpr() {
 	local issue_number=$(extract_issue_number)
@@ -165,7 +167,6 @@ function openpr() {
 		local pr_body="Issue #$issue_number"
 	fi
 
-	# Fetch issue title for PR title
 	local issue_title=$(gh issue view "$issue_number" --json title | jq -r '.title')
 	local pr_title="Issue #$issue_number - $issue_title"
 
@@ -182,4 +183,3 @@ function openpr() {
 		--body "$pr_body"
 }
 alias pr='openpr'
-
