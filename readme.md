@@ -104,7 +104,7 @@ depending on your input.
 ### Aliases & Helpers
 
 ```zsh
-id
+in
 # → Issue #60938
 
 cm
