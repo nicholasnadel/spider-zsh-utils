@@ -2,9 +2,7 @@
 
 ZSH utilities for Spider Strategies developers to streamline Git workflow and branch naming conventions.
 
-
-[![Demo](demo.gif)](demo.gif)
-
+![Demo](demo.gif)
 
 ![Demo](demo.png)
 
@@ -118,4 +116,3 @@ fm
 pr
 # → Prompts and opens a pull request for the current branch
 ```
-![Demo](demo.png)
