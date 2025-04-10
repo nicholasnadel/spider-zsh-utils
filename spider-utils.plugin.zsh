@@ -137,10 +137,14 @@ function createbranch() {
 		echo "🔄 Switching to '$source_branch' and pulling latest changes..."
 		git checkout "$source_branch" &&
 		git pull origin "$source_branch" &&
-		echo "🌿 Creating and switching to new branch '$branch_name'..." &&
-		git checkout -b "$branch_name" &&
-		echo "✅ Successfully created and checked out branch:" &&
-		git branch --show-current
+		if git show-ref --verify --quiet refs/heads/"$branch_name"; then
+			echo "⚠️ Branch '$branch_name' already exists. Switching to it..."
+			git checkout "$branch_name"
+		else
+			echo "🌿 Creating and switching to new branch '$branch_name'..."
+			git checkout -b "$branch_name"
+		fi
+		echo "✅ Now on branch: $(git branch --show-current)"
 	else
 		echo "❌ Cancelled"
 	fi
