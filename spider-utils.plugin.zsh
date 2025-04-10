@@ -20,6 +20,7 @@ function issue_number() {
 	local num=$(extract_issue_number)
 	[[ -n "$num" ]] && echo "Issue #$num"
 }
+alias issue='issue_number'
 alias in='issue_number'
 
 # Lowercase commit message (does not close issue)
