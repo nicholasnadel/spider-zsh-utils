@@ -12,6 +12,14 @@ ZSH utilities for Spider Strategies developers to streamline Git workflow and br
 - 🧭 Falls back to current directory if milestone format or folder is missing
 - 📝 Includes helpers for commit messages, issue IDs, and capitalization
 
+## Requirements
+
+- ZSH
+- GitHub CLI (`gh`) — for milestone detection (optional but recommended)
+- `jq` — used to parse milestone data (optional but recommended)
+
+> If `gh` or `jq` are not installed, the plugin will fall back to guessing the base branch from your current folder.
+
 
 ## Installation
 
@@ -69,10 +77,4 @@ cm
 
 fm
 # → Fix #60938 - Field Widgets Have A Span With A Nested Div Structure
-```
-
-## Requirements
-
-```bash
-brew install gh jq
 ```
